@@ -328,10 +328,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean////importando Heroku a la base de datos
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource(String corsOrigin) {
         final CorsConfiguration configuration = new CorsConfiguration();
         // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList(corsOrigin));
         configuration.setAllowedMethods(Arrays.asList("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
         // setAllowCredentials(true) is important, otherwise:
@@ -342,7 +342,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedMethod("*");
 
         // setAllowedHeaders is important! Without it, OPTIONS preflight request
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type",
+                "Accept","Access-Control-Request-Method","Access-Control-Request-Headers","Access-Control-Allow-Origin",
+                "Accept-Language","Authorization","Content-Type","Request-Name","Request-Surname","Origin","X-Request-AppVersion",
+                "X-Request-OsVersion", "X-Request-Device", "X-Requested-With"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
